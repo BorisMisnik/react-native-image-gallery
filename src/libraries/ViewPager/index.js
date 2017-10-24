@@ -119,6 +119,8 @@ export default class ViewPager extends PureComponent {
         } else if (this.currentPage + 1 >= this.props.pageDataArray.length &&
             this.props.pageDataArray.length !== prevProps.pageDataArray.length) {
             this.scrollToPage(this.props.pageDataArray.length, true);
+        } else if (this.currentPage  === this.props.pageDataArray.length) {
+            this.scrollToPage(this.props.pageDataArray.length, true);
         }
     }
 

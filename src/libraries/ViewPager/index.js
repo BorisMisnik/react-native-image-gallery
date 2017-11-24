@@ -108,6 +108,7 @@ export default class ViewPager extends PureComponent {
 
         const finalX = this.getScrollOffsetOfPage(page);
         this.scroller.startScroll(this.scroller.getCurrX(), 0, finalX - this.scroller.getCurrX(), 0, 0);
+
     }
 
     componentDidUpdate (prevProps) {
@@ -121,7 +122,12 @@ export default class ViewPager extends PureComponent {
             this.scrollToPage(this.props.pageDataArray.length, true);
         } else if (this.currentPage  === this.props.pageDataArray.length) {
             this.scrollToPage(this.props.pageDataArray.length, true);
+        } else if (this.props.pageDataArray.length !== prevProps.pageDataArray.length) {
+            const page = this.validPage(this.props.initialPage);
+            this.onPageChanged(page);
         }
+
+        this.onPageChanged(this.currentPage);
     }
 
     onLayout (e) {
@@ -152,10 +158,8 @@ export default class ViewPager extends PureComponent {
     }
 
     onPageChanged (page) {
-        if (this.currentPage !== page) {
-            this.currentPage = page;
-            this.props.onPageSelected && this.props.onPageSelected(page);
-        }
+        this.currentPage = page;
+        this.props.onPageSelected && this.props.onPageSelected(page);
     }
 
     onPageScrollStateChanged (state) {
@@ -216,8 +220,10 @@ export default class ViewPager extends PureComponent {
         if (immediate) {
             InteractionManager.runAfterInteractions(() => {
                 this.scroller.startScroll(this.scroller.getCurrX(), 0, finalX - this.scroller.getCurrX(), 0, 0);
-                this.refs['innerFlatList'].scrollToOffset({offset: finalX, animated: false});
-                this.refs['innerFlatList'].recordInteraction();
+                if (this.refs['innerFlatList']) {
+                    this.refs['innerFlatList'].scrollToOffset({offset: finalX, animated: false});
+                    this.refs['innerFlatList'].recordInteraction();    
+                }
             });
         } else {
             this.scroller.startScroll(this.scroller.getCurrX(), 0, finalX - this.scroller.getCurrX(), 0, 400);
@@ -296,7 +302,6 @@ export default class ViewPager extends PureComponent {
         if (!scrollEnabled || pageDataArray.length <= 0) {
             gestureResponder = {};
         }
-
         return (
             <View
               {...this.props}

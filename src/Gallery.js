@@ -22,6 +22,7 @@ export default class Gallery extends PureComponent {
         onSingleTapConfirmed: PropTypes.func,
         onGalleryStateChanged: PropTypes.func,
         onLongPress: PropTypes.func,
+        onImageMove: PropTypes.func,    
         removeClippedSubviews: PropTypes.bool,
         imageComponent: PropTypes.func,
         errorComponent: PropTypes.func,
@@ -137,6 +138,9 @@ export default class Gallery extends PureComponent {
                 const currentImageTransformer = this.getCurrentImageTransformer();
                 currentImageTransformer && currentImageTransformer.onResponderMove(evt, gestureState);
                 clearTimeout(this._longPressTimeout);
+                if (this.props.onImageMove) {
+                    this.props.onImageMove(evt, gestureState)
+                }
             },
             onEnd: (evt, gestureState) => {
                 const currentImageTransformer = this.getCurrentImageTransformer();

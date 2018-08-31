@@ -72,7 +72,7 @@ export default class ViewPager extends PureComponent {
             } else {
                 const curX = this.scroller.getCurrX();
                 if (this.refs['innerFlatList']) {
-                    this.refs['innerFlatList'] && this.refs['innerFlatList'].scrollToOffset({ offset: curX, animated: false });    
+                    this.refs['innerFlatList'] && this.refs['innerFlatList'].scrollToOffset({ offset: curX, animated: false });
                 }
                 
 
@@ -122,7 +122,7 @@ export default class ViewPager extends PureComponent {
             }
         } else if (this.currentPage + 1 >= this.props.pageDataArray.length &&
             this.props.pageDataArray.length !== prevProps.pageDataArray.length) {
-            this.scrollToPage(this.props.pageDataArray.length, true);
+            this.scrollToPage(this.props.pageDataArray.length);
         } else if (this.currentPage  === this.props.pageDataArray.length) {
             this.scrollToPage(this.props.pageDataArray.length, true);
         } else if (this.props.pageDataArray.length !== prevProps.pageDataArray.length) {
@@ -272,7 +272,6 @@ export default class ViewPager extends PureComponent {
 
         let newProps = { ...page.props, ref: page.ref, style };
         const element = React.createElement(page.type, newProps);
-
         if (this.props.pageMargin > 0 && index > 0) {
             // Do not using margin style to implement pageMargin.
             // The ListView seems to calculate a wrong width for children views with margin.
